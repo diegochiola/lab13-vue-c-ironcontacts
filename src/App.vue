@@ -6,15 +6,26 @@ const contactsList = ref(contacts);
 //console.log(contactsList);
 
 //para solo mostrar 5
-const fiveContacts = computed(() => {
-  return contactsList.value.slice(0, 5);
-});
-console.log(fiveContacts);
+const fiveContacts = ref(contactsList.value.slice(0, 5));
+
+//interaction 3
+const addRandomContact = () => {
+  const notDisplayedContacts = contactsList.value.filter(contact => !fiveContacts.value.includes(contact));
+  if (notDisplayedContacts.length > 0) {
+    const randomIndex = Math.floor(Math.random() * notDisplayedContacts.length);
+    fiveContacts.value.push(notDisplayedContacts[randomIndex]);
+  }else{
+    alert("Sorry! No more contacts to display");
+  }
+};
+
+
 </script>
 
 <template>
   <section>
     <h1>Iron-Contacts</h1>
+    <button @click="addRandomContact">Add Random Contact</button>
     <table class="table">
       <tr>
         <th>Picture</th>
@@ -41,6 +52,14 @@ section {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+button{
+  margin: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: blue;
+  color: white;
 }
 .table {
   border-collapse: collapse;
